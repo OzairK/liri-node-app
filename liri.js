@@ -2,15 +2,13 @@
 var keys = require("./keys.js");
 var Twitter = require('twitter');
 var request = require("request");
-var movieName = "";
 var fs = require("fs")
-
 var Spotify = require('node-spotify-api');
-
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
-
 var argument = process.argv;
+
+var movieName = "";
 var fileData = [];
 fs.readFile("random.txt", "utf8", function (error, data) {
 
@@ -19,20 +17,21 @@ fs.readFile("random.txt", "utf8", function (error, data) {
         return console.log(error);
     }
     //console.log(data);
-    fileData = data.split(",");
+    fileData = data.split(",");                                 //get data from random.txt
 
-    if (argument[2] === "do-what-it-says") {
+    if (argument[2] === "do-what-it-says") {                    //get commands from file
         argument[2] = fileData[0];
         argument[3] = fileData[1];
 
+        //error handling to ensure argument[4,5,6..] is empty incase user types more than one command.           
         for (i = 4; i < argument.length; i++) {
             argument[i] = "";
         }
     }
 
-
+    // checks which command has been given?
     switch (argument[2]) {
-        case "my-tweets":
+        case "my-tweets":                                       //prints last 20 tweets of user, unless less than 20 tweets exist
             var params = { screen_name: 'ozzysworld3' };
             client.get('statuses/user_timeline', params, function (error, tweets, response) {
                 if (error) throw error;
@@ -50,36 +49,31 @@ fs.readFile("random.txt", "utf8", function (error, data) {
             });
             break;
 
-        case "spotify-this-song":
+        case "spotify-this-song":                               //gives information about song 
             var songName = "";
-            for (var i = 3; i < argument.length; i++) {
+            for (var i = 3; i < argument.length; i++) {         //ensures entire name of song is captrued
                 songName += argument[i] + " ";
             }
-            if (songName === "") songName = "the sign by ace of base";
-
+            if (songName === "") {                              //default song if nothing is requested
+                songName = "the sign by ace of base";
+            }
             spotify.search({ type: 'track', query: songName }, function (err, data) {
                 if (err) {
                     return console.log('Error occurred: ' + err);
                 }
                 var songData = data.tracks.items[0];
-                //console.log("Song title: "+ JSON.stringify( songData, null, 8));
-                console.log(songData.album.artists[0].name + "\n", songData.name + "\n", songData.href + "\n", songData.album.name);
-
-
-                // console.log(songData)
-            })
-
+                console.log(" " +songData.album.artists[0].name + "\n", songData.name + "\n", songData.href + "\n", songData.album.name);
+            });
             break;
 
         case "movie-this":
-            if (argument[3] === "") {
-                movieName = "Mr. Nobody";
-            }
 
-            for (var i = 3; i < argument.length; i++) {
+            for (var i = 3; i < argument.length; i++) {         //ensures entire name of movie is captured
                 movieName += " " + argument[i];
             }
-            console.log(movieName);
+            if (argument[3] === "") {                           //default movie if nothing is requested
+                movieName = "Mr. Nobody";
+            }
             var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
             request(queryUrl, function (error, response, body) {
@@ -97,13 +91,7 @@ fs.readFile("random.txt", "utf8", function (error, data) {
 
             });
             break;
-
-
-
-        case "do-what-it-says":
-
-
-        default:
+        default:                                                  //proper command was not typed
             console.log("please type in one of the following commands: \n my-tweets \n spotify-this-song <song name> \n movie-this  <movie name> \n do-what-it-says");
     }
 });
