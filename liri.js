@@ -1,4 +1,4 @@
-//require('dotenv').config()
+require("dotenv").config();
 var keys = require("./keys.js");
 var Twitter = require('twitter');
 var request = require("request");
