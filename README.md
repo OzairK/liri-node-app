@@ -12,6 +12,9 @@ The language interpretation and recognition interface (LIRI) runs from the termi
     * do-what-it-says 
 4. Be amazed by the power of the node.
 
+## Working Demo GIF
+https://drive.google.com/file/d/13jnteMfKdQOiK79ZNcERyHDslFPyxnkF/view
+
 ## Built With
 
 * [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Makes it interactive
