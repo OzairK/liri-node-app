@@ -19,8 +19,7 @@ The language interpretation and recognition interface (LIRI) runs from the termi
 * [NPM Packages](https://www.npmjs.com/) - Small packages of reuseable code that pack a big punch
 
 ## Author
-
-* **Kris Acker Bierma** - [KrisBierma](https://github.com/KrisBierma)
+Ozair Khan
 
 ## License
 
